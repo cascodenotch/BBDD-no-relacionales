@@ -80,7 +80,7 @@ StudentModel.findOne({ firstName: 'Alice' })
 
             student.marks.forEach(mark=> {
                 let notas = mark.mark;
-                console.log (notas);
+                console.log ("Nota: " + notas);
             })
 
         } else {
@@ -97,7 +97,7 @@ StudentModel.findOne({ firstName: 'Alice' })
 
             student.marks.forEach(mark=> {
                 let asignaturas = mark.subject;
-                console.log (asignaturas.title);
+                console.log ("Asignatura: " + asignaturas.title);
             })
 
         } else {
@@ -115,7 +115,7 @@ StudentModel.findOne({ firstName: 'Alice' })
             student.marks.forEach(mark=> {
                 let asignatura = mark.subject;
                 asignatura.teachers.forEach (profesor =>{
-                    console.log(profesor.firstName)
+                    console.log("Profe: " + profesor.firstName)
                 })   
             })
 

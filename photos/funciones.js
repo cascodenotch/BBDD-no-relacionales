@@ -1,6 +1,7 @@
 let mongoose = require("mongoose");
 let {photosModel} = require("./esquema");
 const { domainToASCII } = require("url");
+const { getDefaultResultOrder } = require("dns");
 
 // Conectar a la base de datos
 
@@ -36,8 +37,8 @@ let photo3 = {
 function uploadPhoto (photo){
 
     photosModel.create(photo)
-    .then(dato => {
-        console.log('Foto creada con éxito:', dato);
+    .then(result => {
+        console.log('Foto creada con éxito:', result);
     })
     .catch(error => {
         console.error('Error al crear foto', error);
@@ -46,8 +47,8 @@ function uploadPhoto (photo){
 
 function getPhotos (user){
     photosModel.find({user: user})
-    .then( datos => {
-        console.log('Fotos del usuario conseguidas con éxito:', datos);
+    .then( result => {
+        console.log('Fotos del usuario conseguidas con éxito:', result);
     })
     .catch(error => {
         console.error('Error al obtener las fotos:', error);
@@ -56,8 +57,8 @@ function getPhotos (user){
 
 function editPhoto (title, description){
     photosModel.updateOne({title:title, description: description})
-    .then(dato => {
-        console.log('Foto editada con éxito:', dato);
+    .then(result => {
+        console.log('Foto editada con éxito:', result);
     })
     .catch(error => {
         console.error('Error al editar foto', error);
@@ -66,8 +67,8 @@ function editPhoto (title, description){
 
 function deletePhoto (user, title,){
     photosModel.deleteOne({user:user, title:title})
-    .then(dato => {
-        console.log('Foto de usuario eliminada con éxito:', dato);
+    .then(result => {
+        console.log('Foto de usuario eliminada con éxito:', result);
     })
     .catch(error => {
         console.error('Error al eliminar foto de usuario', error);
@@ -76,8 +77,8 @@ function deletePhoto (user, title,){
 
 function deleteAll (user){
     photosModel.deleteMany({user:user})
-    .then(dato => {
-        console.log('Fotos de usuario eliminadas con éxito:', dato);
+    .then(result => {
+        console.log('Fotos de usuario eliminadas con éxito:', result);
     })
     .catch(error => {
         console.error('Error al eliminar fotos de usuario', error);

@@ -1,5 +1,5 @@
 let mongoose = require("mongoose");
-let { User, Profile, Credentials } = require("./models");
+let { User, Profile, Credentials } = require("../models");
 
 // Conectar a la base de datos
 mongoose.connect('mongodb://127.0.0.1:27017/codenotch')

@@ -182,8 +182,8 @@ markModel
 
 markModel
 .aggregate([
-    { $group: { _id: "$student_first_name" } }, 
-    { $count: "Número total de alumnos" }
+    { $group: {_id: { firstName: "$student_first_name", lastName: "$student_last_name"}}}, 
+    { $count: "Número total de alumnos"}
 ])
 .then((result) =>
 {
@@ -266,8 +266,9 @@ markModel
 // Número de profesores por asignatura
 
 markModel
-.aggregate([{$unwind: "$teachers"},
-{$group: {"_id": { "Asignatura": "$subject_name" }, "Total profesores": {"$sum": 1}}}
+.aggregate([
+    {$unwind: "$teachers"},
+    {$group: {"_id": { "Asignatura": "$subject_name" }, "Total profesores": {"$sum": 1}}}
 ])
 .then((result) =>
 {
@@ -277,3 +278,75 @@ markModel
 {
     console.log(error);
 })
+
+// Alumnos con nota mayor a 8 o nota con fecha del año anterior
+
+markModel
+.aggregate([
+    {$match: {"$or": [{mark: {"$gte": 8}}, { date: { $lt: new Date('2024-01-01') } } ]}},
+    {$project: {student_first_name: 1, student_last_name: 1, _id: 0}}
+    ])
+    .then((result) =>
+    {
+        console.log(result);
+    })
+    .catch((error) =>
+    {
+        console.log(error);
+    })
+
+// Media de las notas en el último año por asignatura
+
+markModel
+.aggregate([
+    {$match: {date: { $gte: new Date('2024-01-01') }}},
+    {$group: {_id: { "Asignatura": "$subject_name" }, "Nota media": { $avg: "$mark" }}},
+])
+.then((result) =>
+{
+    console.log(result);
+})
+.catch((error) =>
+{
+    console.log(error);
+})
+
+// Nota media de cada aluno en el último año
+
+markModel
+.aggregate([
+    {$match: {date: { $gte: new Date('2024-01-01') }}},
+    {$group: {_id: { firstName: "$student_first_name", lastName: "$student_last_name"}, "Nota media": { $avg: "$mark" }}},
+])
+.then((result) =>
+{
+    console.log(result);
+})
+.catch((error) =>
+{
+    console.log(error);
+})
+
+// Cantidad de asignaturas que cada estudiante tiene con Emiliy
+
+markModel
+.aggregate([
+    {$unwind: "$teachers"},
+    {$match: { "teachers.teacher_first_name": "Emily" } },
+    {$group: {_id: { firstName: "$student_first_name", lastName: "$student_last_name"}, "Asignaturas con Emily": {$sum: 1}}},
+])
+.then((result) =>
+{
+    console.log(result);
+})
+.catch((error) =>
+{
+    console.log(error);
+})
+
+
+
+
+
+
+
